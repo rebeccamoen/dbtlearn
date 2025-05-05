@@ -1,9 +1,5 @@
 
-analyses/
 target/
 dbt_packages/
 logs/
-seeds/
-snapshots/
-tests/
-macros/
+docs/
