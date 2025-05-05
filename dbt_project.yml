@@ -31,5 +31,19 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   dbtlearn:
-    # Config indicated by + and applies to all files under models/example/
-    
+
+    # Ignore any models inside models/example/
+    example:
+      +enabled: false
+
+    # All models in this project default to views unless overridden
+      +materialized: view
+
+    # Models in models/dim/ will be materialized as tables
+    dim:
+      +materialized: table
+
+    # Models in models/src/ will be ephemeral
+    # Ephemeral models (like CTEs) are not created as database objects
+    src:
+      +materialized: ephemeral
