@@ -1,3 +1,6 @@
+-- dbt model configuration
+{{ config(materialized='view') }}
+
 -- CTE: Load all data from the source model 'src_listings'
 WITH src_listings AS (
     SELECT * FROM {{ ref('src_listings') }}
