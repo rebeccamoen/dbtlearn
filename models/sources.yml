@@ -1,0 +1,23 @@
+# Tells dbt where to find your raw source data
+# Lets you reference raw tables in your dbt models like this:
+# SELECT * FROM {{ source('airbnb', 'listings') }}
+
+version: 2  # Required by dbt to indicate the format version of this YAML file
+
+sources:
+  - name: airbnb                  # Logical name used in dbt when calling source('airbnb', 'listings'), etc.
+    schema: raw                   # The schema in your data warehouse where the actual raw tables live
+
+    tables:
+      - name: listings            # Logical name used in dbt code
+        identifier: raw_listings  # Actual table name in the warehouse (e.g., raw.raw_listings)
+
+      - name: hosts
+        identifier: raw_hosts     # Points to raw.raw_hosts in the warehouse
+
+      - name: reviews
+        identifier: raw_reviews       # Points to raw.raw_reviews in the warehouse
+        loaded_at_field: updated_at   # Timestamp column used to check data freshness
+        freshness:                    # Freshness rules to ensure the data is up-to-date
+          warn_after: { count: 1, period: hour }  # Show a warning if data is more than 1 hour old
+          error_after: { count: 2, period: hour } # Throw an error if data is more than 2 hours old
