@@ -14,7 +14,9 @@ WITH src_reviews AS (
 )
 
 -- Main query: Select only reviews where the review_text is not null
-SELECT * FROM src_reviews
+SELECT
+{{ dbt_utils.generate_surrogate_key(['listing_id', 'review_date', 'reviewer_name', 'review_text']) }} AS review_id,
+* FROM src_reviews
 WHERE review_text IS NOT NULL
 
 -- Incremental logic: Only insert new rows from src_reviews where review_date is newer than the most recent date we already have
