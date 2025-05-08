@@ -3,14 +3,18 @@ version: 2  # Required by dbt to define model metadata, tests, and docs
 models:
   - name: dim_listings_clean  # Applies to the dim_listings_clean model
 
+    description: Cleansed table which contains Airbnb listings.
+
     columns:
 
       - name: listing_id
+        description: Primary key for the listing
         tests:
           - unique                  # Ensure no duplicates
           - not_null                # Ensure every row has a value
 
       - name: host_id
+        description: The hosts's id. References the host table.
         tests:
           - not_null
           - relationships:          # Ensure it matches a host_id in the dim_hosts_cleansed model
@@ -18,6 +22,7 @@ models:
               field: host_id
 
       - name: room_type
+        description: Type of the apartment / room
         tests:
           - accepted_values:        # Only allow one of the listed room types
               values: [
@@ -28,5 +33,6 @@ models:
               ]
 
       - name: minimum_nights
+        description: '{{ doc("dim_listing_clean__minimum_nights") }}'
         tests:
           - positive_value          # Only allow positive values for minimum nights
